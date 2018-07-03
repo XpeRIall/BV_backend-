@@ -15,8 +15,20 @@ config :authentication, AuthenticationWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "4LDnLwcVoI7g7pIca/dXX8cOo3gs4zFDb6HNMB8WBv+OwWSRdDP0oKADvknurZYc",
   render_errors: [view: AuthenticationWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Authentication.PubSub,
-           adapter: Phoenix.PubSub.PG2]
+  pubsub: [name: Authentication.PubSub, adapter: Phoenix.PubSub.PG2]
+
+# Guardian config 
+config :guardian, Guardian,
+  # optional
+  allowed_algos: ["HS512"],
+  # optional
+  verify_module: Guardian.JWT,
+  issuer: "BV_Authentication",
+  ttl: {30, :days},
+  # optional
+  verify_issuer: true,
+  secret_key: "Q/pRXuJQoZblGk4AIOHhMX0AkzuUpBS91hQVlO06PqrtRd/iAobc3CdBkMPDVYgc",
+  serializer: Authentication.GuardianSerializer
 
 # Configures Elixir's Logger
 config :logger, :console,
@@ -25,4 +37,4 @@ config :logger, :console,
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
-import_config "#{Mix.env}.exs"
+import_config "#{Mix.env()}.exs"
